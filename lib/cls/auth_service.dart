@@ -5,32 +5,46 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  // Função para realizar o login com Google
   Future<User?> signInWithGoogle() async {
     try {
-      // Faz login com a conta Google
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null; // O usuário cancelou o login
+      print("Iniciando o login com Google...");
 
-      // Obtém detalhes da autenticação
+      // Iniciar o processo de login com Google
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      if (googleUser == null) {
+        // O usuário cancelou o login, retornando null
+        print("O usuário cancelou o login");
+        return null;
+      }
+
+      print("Usuário autenticado no Google: ${googleUser.displayName}");
+
+      // Obter o objeto de autenticação do Google
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
-      // Cria uma credencial para Firebase
+      // Verificar se os tokens de autenticação foram recebidos corretamente
+      print("AccessToken: ${googleAuth.accessToken}");
+      print("IDToken: ${googleAuth.idToken}");
+
+      // Criar as credenciais do Firebase com o token de autenticação do Google
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      // Faz login no Firebase com a credencial do Google
+      // Realizar o login com as credenciais no Firebase
       final UserCredential userCredential = await _auth.signInWithCredential(credential);
+
+      // Verificar se o usuário foi autenticado corretamente no Firebase
+      print("Usuário logado no Firebase: ${userCredential.user?.displayName}");
+
+      // Retornar o usuário autenticado
       return userCredential.user;
     } catch (e) {
-      print("Erro no login com Google: $e");
+      print("Erro ao fazer login com Google: $e");
       return null;
     }
-  }
-
-  Future<void> signOut() async {
-    await _googleSignIn.signOut();
-    await _auth.signOut();
   }
 }

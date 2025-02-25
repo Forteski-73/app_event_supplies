@@ -1,18 +1,37 @@
+// Arquivo android/build.gradle (projeto raiz)
+
+buildscript {
+    repositories {
+        google()      // Repositório do Google
+        mavenCentral() // Repositório Maven Central
+    }
+    dependencies {
+        // Defina a versão do plugin do Android Gradle
+        classpath 'com.android.tools.build:gradle:8.2.1'  // Certifique-se de que a versão do Gradle seja compatível
+
+        // Defina a versão do plugin Google Services
+        classpath 'com.google.gms:google-services:4.3.15'  // Certifique-se de que a versão esteja correta
+    }
+}
+
 allprojects {
     repositories {
-        google()
-        mavenCentral()
+        google()      // Repositório do Google
+        mavenCentral() // Repositório Maven Central
     }
 }
 
 rootProject.buildDir = "../build"
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Tarefa para limpar o projeto
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

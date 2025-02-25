@@ -35,7 +35,11 @@ class _LoginPageState extends State<LoginPage> {
           onPressed: () async {
             final user = await _authService.signInWithGoogle();
             if (user != null) {
-              print("Usuário logado: ${user.displayName}");
+              final message = "Usuário logado: ${user.displayName}";
+              // Exibir SnackBar com o nome do usuário
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(message)),
+              );
             }
           },
           child: Text("Login com Google"),
