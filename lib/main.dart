@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import '../cls/auth_service.dart';
+import 'package:flutter/material.dart';
+import 'pag/login.dart'; // Importe a página de login
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,38 +13,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
-    );
-  }
-}
-
-class LoginPage extends StatefulWidget {
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final AuthService _authService = AuthService();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Login com Google")),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            final user = await _authService.signInWithGoogle();
-            if (user != null) {
-              final message = "Usuário logado: ${user.displayName}";
-              // Exibir SnackBar com o nome do usuário
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(message)),
-              );
-            }
-          },
-          child: Text("Login com Google"),
-        ),
+      title: 'Login com Google',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: LoginPage(), // Chama a LoginPage aqui
     );
   }
 }

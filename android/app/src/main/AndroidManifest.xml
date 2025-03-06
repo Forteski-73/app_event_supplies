@@ -7,6 +7,12 @@
         android:label="app_event_supplies"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <!-- Login google > -->
+        <meta-data
+            android:name="com.google.android.gms.auth.api.signin"
+            android:value="@string/default_web_client_id"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
