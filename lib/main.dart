@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'pag/login.dart'; // Importe a página de login
+import 'pag/login.dart';
+import 'cls/routes.dart';  // import das rotas
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,11 +14,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Login com Google',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LoginPage(), // Chama a LoginPage aqui
+      title: 'Login com Google e Facebook',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: LoginPage(),
+      routes: appRoutes,  // mapa importado
+      onGenerateRoute: onGenerateRoute,  // rotas dinâmicas com argumentos
     );
   }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">app_event_supplies</string>
     <string name="default_web_client_id">503615051589-s5fb9udnvb20enjp73vfue74c2t1a3kv.apps.googleusercontent.com</string>
     <string name="facebook_app_id">9434201566664994</string>
     <string name="facebook_client_token">67877097d384fbf11b856398c1639e4b</string>

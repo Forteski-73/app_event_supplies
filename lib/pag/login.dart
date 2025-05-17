@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'menu.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,12 +47,16 @@ class LoginPage extends StatelessWidget {
 
   Future<User?> _signInWithFacebook() async {
     try {
+      
+      debugPrint("Login com Facebook.............");
       final LoginResult result = await FacebookAuth.instance.login();
+      debugPrint("Login com Facebook...............: ${result.status}");
       if (result.status == LoginStatus.success) {
         final accessToken = result.accessToken;
         if (accessToken != null) {
           final OAuthCredential credential = FacebookAuthProvider.credential(accessToken.tokenString); // Acesso ao token diretamente
           final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+          print("Login com Facebook.....: ${userCredential.user}");
           return userCredential.user;
         }
       }
@@ -65,7 +70,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login com Google ou  Facebook")),
+      appBar: AppBar(title: Text("Aplicativo de Gestão de Materiais para Eventos")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -74,7 +79,12 @@ class LoginPage extends StatelessWidget {
               onPressed: () async {
                 final user = await _signInWithGoogle();
                 if (user != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Bem-vindo, ${user.displayName}!")));
+                  if (user != null) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Menu()),
+                    );
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -96,9 +106,12 @@ class LoginPage extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                final user = await _signInWithFacebook();
+                final user = await _signInWithGoogle();
                 if (user != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Bem-vindo, ${user.displayName}!")));
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Menu()),
+                  );
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -110,7 +123,7 @@ class LoginPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.facebook, color: Colors.white), // Ícone do Facebook
+                  Icon(Icons.facebook, color: const Color.fromARGB(255, 90, 88, 88)), // Ícone do Facebook
                   SizedBox(width: 10),
                   Text('Login com Facebook', style: TextStyle(color: Colors.white, fontSize: 18)),
                 ],
@@ -121,5 +134,4 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
-
 }
